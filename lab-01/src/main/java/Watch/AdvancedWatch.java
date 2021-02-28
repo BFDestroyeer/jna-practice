@@ -4,18 +4,23 @@ package Watch;
  * Watches with hour, minute and second hands
  */
 public class AdvancedWatch extends Watch.SimpleWatch {
-    private int seconds;
+    protected int seconds;
 
     public AdvancedWatch(String name, double price) {
         super(name, price);
-        seconds = 0;
+        this.seconds = 0;
     }
 
-    public void SetTime(int hours, int minutes, int seconds) throws Exception{
-        if ((seconds < 0) || (seconds > 56)) {
+    public void setTime(int hours, int minutes, int seconds) throws Exception{
+        if ((seconds < 0) || (seconds > 59)) {
             throw new Exception("Invalid seconds value");
         }
-        SetTime(hours, minutes);
-        this.seconds = 0;
+        setTime(hours, minutes);
+        this.seconds = seconds;
+    }
+
+    public void addTime(int hours, int minutes, int seconds) {
+        addTime(hours, minutes);
+        this.seconds = (this.seconds + seconds) % 60;
     }
 }
