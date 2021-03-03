@@ -28,4 +28,12 @@ public class SimpleWatch extends Watch.AbstractWatch {
         this.hours = (this.hours + hours) % 12;
         this.minutes = (this.minutes + minutes) % 60;
     }
+
+    public int getHours() {
+        return hours;
+    }
+
+    public int getMinutes() {
+        return minutes;
+    }
 }

@@ -23,4 +23,8 @@ public class AdvancedWatch extends Watch.SimpleWatch {
         addTime(hours, minutes);
         this.seconds = (this.seconds + seconds) % 60;
     }
+
+    public int getSeconds() {
+        return seconds;
+    }
 }
