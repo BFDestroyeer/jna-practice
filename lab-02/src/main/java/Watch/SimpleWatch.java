@@ -7,7 +7,7 @@ import java.util.LinkedList;
 /**
  * Watches with hour and minute hands
  */
-public class SimpleWatch implements IWatch {
+public class SimpleWatch implements IWatchWithAlarmClock {
     private final String name;
     private final double price;
 
@@ -38,7 +38,6 @@ public class SimpleWatch implements IWatch {
             throw new Exception("Invalid hours");
         }
         this.hours = hours % 12;
-        checkAlarms();
     }
 
     @Override
@@ -47,7 +46,6 @@ public class SimpleWatch implements IWatch {
             throw new Exception("Invalid minutes");
         }
         this.minutes = minutes;
-        checkAlarms();
     }
 
     @Override
@@ -58,14 +56,12 @@ public class SimpleWatch implements IWatch {
     @Override
     public void addHours(int hours) throws Exception {
         this.hours = (this.hours + hours) % 12;
-        checkAlarms();
     }
 
     @Override
     public void addMinutes(int minutes) throws Exception{
         addHours((this.minutes + minutes) / 60);
         this.minutes = (this.minutes + minutes) % 60;
-        checkAlarms();
     }
 
     @Override
@@ -92,10 +88,12 @@ public class SimpleWatch implements IWatch {
         return this.hours + ":" + this.minutes;
     }
 
+    @Override
     public void pushAlarmClock(IAlarmClock alarmClock) {
         alarmClocks.push(alarmClock);
     }
 
+    @Override
     public Boolean checkAlarms() {
         for (IAlarmClock alarmClock: this.alarmClocks) {
             try {

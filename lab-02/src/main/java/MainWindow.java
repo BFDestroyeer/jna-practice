@@ -2,6 +2,9 @@ import javax.swing.*;
 
 import AlarmClock.AdvancedAlarmClock;
 import Watch.AdvancedWatch;
+import Watch.BWatchWithAlarmClock;
+import Watch.IWatchWithAlarmClock;
+import Watch.WatchType;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,10 +21,10 @@ public class MainWindow {
     private JSpinner spinner_alarmHours;
     private JButton button_pushAlarmClock;
 
-    private AdvancedWatch watches;
+    private final IWatchWithAlarmClock watches;
 
     public MainWindow() {
-        watches = new AdvancedWatch("MyWatch", 10);
+        watches = BWatchWithAlarmClock.build(WatchType.AdvancedWatch, "MyWatch", 10);
         updateTimeLabel();
 
         button_setTime.addActionListener(e -> updateTime());

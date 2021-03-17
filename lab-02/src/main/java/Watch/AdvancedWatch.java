@@ -19,14 +19,12 @@ public class AdvancedWatch extends Watch.SimpleWatch {
             throw new Exception("Invalid seconds");
         }
         this.seconds = seconds;
-        checkAlarms();
     }
 
     @Override
     public void addSeconds(int seconds) throws Exception{
         addMinutes((this.seconds + seconds) / 60);
         this.seconds = (this.seconds + seconds) % 60;
-        checkAlarms();
     }
 
     @Override
