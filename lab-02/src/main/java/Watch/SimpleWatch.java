@@ -1,20 +1,27 @@
 package Watch;
 
+import AlarmClock.IAlarmClock;
+
+import java.util.LinkedList;
+
 /**
  * Watches with hour and minute hands
  */
 public class SimpleWatch implements IWatch {
-    private String name;
-    private double price;
+    private final String name;
+    private final double price;
 
     protected int hours;
     protected int minutes;
+
+    protected LinkedList<IAlarmClock> alarmClocks;
 
     public SimpleWatch(String name, double price) {
         this.name = name;
         this.price = price;
         this.hours = 0;
         this.minutes = 0;
+        alarmClocks = new LinkedList<>();
     }
 
     public String getName() {
@@ -31,6 +38,7 @@ public class SimpleWatch implements IWatch {
             throw new Exception("Invalid hours");
         }
         this.hours = hours % 12;
+        checkAlarms();
     }
 
     @Override
@@ -39,6 +47,7 @@ public class SimpleWatch implements IWatch {
             throw new Exception("Invalid minutes");
         }
         this.minutes = minutes;
+        checkAlarms();
     }
 
     @Override
@@ -47,14 +56,16 @@ public class SimpleWatch implements IWatch {
     }
 
     @Override
-    public void addHours(int hours) {
+    public void addHours(int hours) throws Exception {
         this.hours = (this.hours + hours) % 12;
+        checkAlarms();
     }
 
     @Override
-    public void addMinutes(int minutes) {
+    public void addMinutes(int minutes) throws Exception{
         addHours((this.minutes + minutes) / 60);
         this.minutes = (this.minutes + minutes) % 60;
+        checkAlarms();
     }
 
     @Override
@@ -79,5 +90,17 @@ public class SimpleWatch implements IWatch {
 
     public String toString() {
         return this.hours + ":" + this.minutes;
+    }
+
+    public void pushAlarmClock(IAlarmClock alarmClock) {
+        alarmClocks.push(alarmClock);
+    }
+
+    public void checkAlarms() throws Exception {
+        for (IAlarmClock alarmClock: this.alarmClocks) {
+            if (alarmClock.getAlarmHours() == this.hours && alarmClock.getAlarmMinutes() == this.minutes) {
+                //DO SOME
+            }
+        }
     }
 }
