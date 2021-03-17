@@ -96,11 +96,17 @@ public class SimpleWatch implements IWatch {
         alarmClocks.push(alarmClock);
     }
 
-    public void checkAlarms() throws Exception {
+    public Boolean checkAlarms() {
         for (IAlarmClock alarmClock: this.alarmClocks) {
-            if (alarmClock.getAlarmHours() == this.hours && alarmClock.getAlarmMinutes() == this.minutes) {
-                //DO SOME
+            try {
+                if (alarmClock.getAlarmHours() == this.hours && alarmClock.getAlarmMinutes() == this.minutes) {
+                    return true;
+                }
+            } catch (Exception e)
+            {
+
             }
         }
+        return false;
     }
 }

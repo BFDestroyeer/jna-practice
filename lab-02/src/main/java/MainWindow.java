@@ -37,14 +37,17 @@ public class MainWindow {
             return;
         }
         updateTimeLabel();
+        if (watches.checkAlarms()) {
+            showAlarmDialog();
+        }
     }
 
     public void pushAlarmClock() {
         AdvancedAlarmClock alarmClock = new AdvancedAlarmClock();
         try {
-            alarmClock.setAlarmHours((Integer) spinner_hours.getValue());
-            alarmClock.setAlarmMinutes((Integer) spinner_minutes.getValue());
-            alarmClock.setAlarmSeconds((Integer) spinner_seconds.getValue());
+            alarmClock.setAlarmHours((Integer) spinner_alarmHours.getValue());
+            alarmClock.setAlarmMinutes((Integer) spinner_alarmMinutes.getValue());
+            alarmClock.setAlarmSeconds((Integer) spinner_alarmSeconds.getValue());
         } catch (Exception e) {
             return;
         }
@@ -53,6 +56,10 @@ public class MainWindow {
 
     public void updateTimeLabel() {
         label_time.setText(watches.toString());
+    }
+
+    public void showAlarmDialog() {
+        JOptionPane.showMessageDialog(new JFrame(), "ALARM!!!");
     }
 
     public static void main(String[] args) {

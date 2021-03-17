@@ -40,12 +40,17 @@ public class AdvancedWatch extends Watch.SimpleWatch {
     }
 
     @Override
-    public void checkAlarms() throws Exception {
+    public Boolean checkAlarms() {
         for (IAlarmClock alarmClock: this.alarmClocks) {
-            if (alarmClock.getAlarmHours() == this.hours && alarmClock.getAlarmMinutes() == this.minutes
-            && alarmClock.getAlarmSeconds() == this.seconds) {
-                
+            try {
+                if (alarmClock.getAlarmHours() == this.hours && alarmClock.getAlarmMinutes() == this.minutes
+                && alarmClock.getAlarmSeconds() == this.seconds) {
+                    return true;
+                }
+            } catch(Exception e) {
+
             }
         }
+        return false;
     }
 }
