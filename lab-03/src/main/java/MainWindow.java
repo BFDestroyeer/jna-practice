@@ -26,11 +26,13 @@ public class MainWindow implements IListener {
     private JButton button_stop;
     private JButton button_pause;
     private JLabel label_lastAlarm;
+    private JLabel label_alarm;
 
     private final IWatch watch;
     private final WatchController controller;
     private LinkedList<IAlarmClock> alarms = new LinkedList<>();
     private ICallable alarm_slot;
+    private String alarm_label_text = "";
 
     public MainWindow() {
         this.watch = BWatch.build(WatchType.AdvancedWatch, "MyWatch", 10);
@@ -86,6 +88,14 @@ public class MainWindow implements IListener {
         ((IListener) alarmClock).connect(alarm_slot);
         publisher.addListener((IListener) alarmClock);
         alarms.push(alarmClock);
+
+        try {
+            alarm_label_text += alarmClock.getAlarmHours() + ":" + alarmClock.getAlarmMinutes();
+            alarm_label_text +=  ":" + alarmClock.getAlarmSeconds();
+        } catch (Exception e) { };
+        alarm_label_text += "    ";
+        this.label_alarm.setText(alarm_label_text);
+
     }
 
     public static void main(String[] args) {
