@@ -1,15 +1,34 @@
 package AlarmClock;
 
+import Events.AbstractEvent;
+import Events.ICallable;
+import Events.IListener;
+import Watch.TimeEvent;
+
 import java.awt.*;
 import java.util.LinkedList;
 
-public class SimpleAlarmClock implements IAlarmClock {
-    private int hours;
-    private int minutes;
+public class SimpleAlarmClock implements IAlarmClock, IListener {
+    protected int hours;
+    protected int minutes;
+    protected ICallable slot;
 
     public SimpleAlarmClock() {
         hours = 0;
         minutes = 0;
+    }
+
+    @Override
+    public void signal(AbstractEvent event) {
+        TimeEvent timeEvent = (TimeEvent) event;
+        if (timeEvent.getHours() == this.hours && timeEvent.getMinutes() == minutes) {
+            slot.call();
+        }
+    }
+
+    @Override
+    public void connect(ICallable slot) {
+        this.slot = slot;
     }
 
     @Override

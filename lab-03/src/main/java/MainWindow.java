@@ -1,16 +1,17 @@
 import javax.swing.*;
 
 import AlarmClock.AdvancedAlarmClock;
-import Watch.AdvancedWatch;
+import AlarmClock.IAlarmClock;
+import Events.AbstractEvent;
+import Events.ICallable;
+import Events.IPublisher;
+import Watch.*;
 import Watch.BWatch;
-import Watch.BWatch;
-import Watch.IWatch;
-import Watch.WatchType;
+import Events.IListener;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.util.LinkedList;
 
-public class MainWindow {
+public class MainWindow implements IListener {
     private JButton button_setTime;
     private JPanel mainPanel;
     private JSpinner spinner_hours;
@@ -21,18 +22,55 @@ public class MainWindow {
     private JSpinner spinner_alarmMinutes;
     private JSpinner spinner_alarmHours;
     private JButton button_pushAlarmClock;
+    private JButton button_start;
+    private JButton button_stop;
+    private JButton button_pause;
+    private JLabel label_lastAlarm;
 
-    private final IWatch watches;
+    private final IWatch watch;
+    private final WatchController controller;
+    private LinkedList<IAlarmClock> alarms = new LinkedList<>();
+    private ICallable alarm_slot;
 
     public MainWindow() {
-        watches = BWatch.build(WatchType.AdvancedWatch, "MyWatch", 10);
-        updateTimeLabel();
+        this.watch = BWatch.build(WatchType.AdvancedWatch, "MyWatch", 10);
+        this.controller = new WatchController(this.watch);
+
+        IPublisher publisher = (IPublisher) watch;
+        publisher.addListener(this);
+        alarm_slot = () -> {
+            String label_text = "";
+            try {
+                label_text = watch.getHours() + ":" + watch.getMinutes();
+                label_text +=  ":" + watch.getSeconds();
+            } catch (Exception e) { };
+            this.label_lastAlarm.setText(label_text);
+        };
 
         button_setTime.addActionListener(e -> updateTime());
         button_pushAlarmClock.addActionListener(e -> pushAlarmClock());
+        button_pause.addActionListener(e -> this.controller.setDisabled());
+        button_start.addActionListener(e -> this.controller.setEnabled());
+        button_stop.addActionListener(e -> this.controller.reset());
+    }
+
+    @Override
+    public void signal(AbstractEvent event) {
+        TimeEvent timeEvent = (TimeEvent) event;
+        String label_text = timeEvent.getHours() + ":" + timeEvent.getMinutes() + ":" + timeEvent.getSeconds();
+        this.label_time.setText(label_text);
+    }
+
+    @Override
+    public void connect(ICallable slot) {
     }
 
     public void updateTime() {
+        try {
+            this.watch.setHours((Integer) spinner_hours.getValue());
+            this.watch.setMinutes((Integer) spinner_minutes.getValue());
+            this.watch.setSeconds((Integer) spinner_seconds.getValue());
+        } catch (Exception e) { }
     }
 
     public void pushAlarmClock() {
@@ -44,14 +82,10 @@ public class MainWindow {
         } catch (Exception e) {
             return;
         }
-    }
-
-    public void updateTimeLabel() {
-        label_time.setText(watches.toString());
-    }
-
-    public void showAlarmDialog() {
-        JOptionPane.showMessageDialog(new JFrame(), "ALARM!!!");
+        IPublisher publisher = (IPublisher) watch;
+        ((IListener) alarmClock).connect(alarm_slot);
+        publisher.addListener((IListener) alarmClock);
+        alarms.push(alarmClock);
     }
 
     public static void main(String[] args) {

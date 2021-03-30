@@ -53,5 +53,6 @@ public class WatchController {
             this.watch.setMinutes(0);
             this.watch.setSeconds(0);
         } catch (Exception e) {}
+        setDisabled();
     }
 }
