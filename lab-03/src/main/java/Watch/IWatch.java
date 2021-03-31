@@ -6,7 +6,7 @@ public interface IWatch {
     void setSeconds(int seconds) throws Exception;
 
     void addHours(int hours) throws Exception;
-    void addMinutes(int hours) throws Exception;
+    void addMinutes(int minutes) throws Exception;
     void addSeconds(int seconds) throws Exception;
 
     int getHours() throws Exception;

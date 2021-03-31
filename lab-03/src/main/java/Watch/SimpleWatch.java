@@ -7,28 +7,12 @@ import Events.IPublisher;
 /**
  * Watches with hour and minute hands
  */
-public class SimpleWatch implements IWatch, IPublisher {
+public class SimpleWatch implements IWatch {
     private final String name;
     private final double price;
 
     protected int hours;
     protected int minutes;
-
-    EventManager manager = new EventManager();
-
-    @Override
-    public void addListener(IListener listener) {
-        manager.subscribe(listener);
-    }
-
-    @Override
-    public void removeListener(IListener listener) {
-        manager.unsubscribe(listener);
-    }
-
-    protected void broadcastTime() {
-        manager.broadcast(new TimeEvent(this.hours, this.minutes));
-    }
 
     public SimpleWatch(String name, double price) {
         this.name = name;
@@ -51,7 +35,6 @@ public class SimpleWatch implements IWatch, IPublisher {
             throw new Exception("Invalid hours");
         }
         this.hours = hours % 12;
-        this.broadcastTime();
     }
 
     @Override
@@ -60,7 +43,6 @@ public class SimpleWatch implements IWatch, IPublisher {
             throw new Exception("Invalid minutes");
         }
         this.minutes = minutes;
-        this.broadcastTime();
     }
 
     @Override
@@ -71,14 +53,12 @@ public class SimpleWatch implements IWatch, IPublisher {
     @Override
     public void addHours(int hours) throws Exception {
         this.hours = (this.hours + hours) % 12;
-        this.broadcastTime();
     }
 
     @Override
     public void addMinutes(int minutes) throws Exception{
         addHours((this.minutes + minutes) / 60);
         this.minutes = (this.minutes + minutes) % 60;
-        this.broadcastTime();
     }
 
     @Override

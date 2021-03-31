@@ -25,7 +25,6 @@ public class MainWindow implements IListener {
     private JButton button_start;
     private JButton button_stop;
     private JButton button_pause;
-    private JLabel label_lastAlarm;
     private JLabel label_alarm;
 
     private final IWatch watch;
@@ -38,15 +37,10 @@ public class MainWindow implements IListener {
         this.watch = BWatch.build(WatchType.AdvancedWatch, "MyWatch", 10);
         this.controller = new WatchController(this.watch);
 
-        IPublisher publisher = (IPublisher) watch;
+        IPublisher publisher = (IPublisher) this.controller;
         publisher.addListener(this);
         alarm_slot = () -> {
-            String label_text = "";
-            try {
-                label_text = watch.getHours() + ":" + watch.getMinutes();
-                label_text +=  ":" + watch.getSeconds();
-            } catch (Exception e) { };
-            this.label_lastAlarm.setText(label_text);
+            JOptionPane.showMessageDialog(new JFrame(), "ALARM!!!");
         };
 
         button_setTime.addActionListener(e -> updateTime());
@@ -84,7 +78,7 @@ public class MainWindow implements IListener {
         } catch (Exception e) {
             return;
         }
-        IPublisher publisher = (IPublisher) watch;
+        IPublisher publisher = (IPublisher) this.controller;
         ((IListener) alarmClock).connect(alarm_slot);
         publisher.addListener((IListener) alarmClock);
         alarms.push(alarmClock);

@@ -17,8 +17,10 @@ public class EventManager {
     }
 
     public void broadcast(AbstractEvent event) {
-        for (IListener listener: listeners) {
-            listener.signal(event);
-        }
+            new Thread(() -> {
+                for (IListener listener: listeners) {
+                    listener.signal(event);
+                }
+            }).start();
     }
 }
