@@ -51,7 +51,13 @@ public class ServerController extends Thread implements IListener {
     }
 
     public void sendEvent(AbstractEvent event) {
-
+        if (event.type == EventType.TIME_UPDATE) {
+            TimeEvent timeEvent = (TimeEvent) event;
+            String data = JSON.get().toJson(timeEvent);
+            try {
+                dataOutputStream.writeUTF(data);
+            } catch (IOException e) { }
+        }
     }
 
     @Override

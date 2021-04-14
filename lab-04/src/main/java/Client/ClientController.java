@@ -7,7 +7,7 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-public class ClientController {
+public class ClientController implements IPublisher {
     private EventManager eventManager = new EventManager();
 
     Thread thread;
@@ -21,6 +21,14 @@ public class ClientController {
     OutputStream outputStream;
     DataInputStream dataInputStream;
     DataOutputStream dataOutputStream;
+
+    public void addListener(IListener listener) {
+        this.eventManager.subscribe(listener);
+    }
+
+    public void removeListener(IListener listener) {
+        this.eventManager.unsubscribe(listener);
+    }
 
     public void connect() {
         try {
@@ -58,7 +66,10 @@ public class ClientController {
             this.dataInputStream = new DataInputStream(this.inputStream);
             while (true) {
                 String data = this.dataInputStream.readUTF();
-                // TODO: Event
+                TimeEvent event = JSON.get().fromJson(data, TimeEvent.class);
+                if (event.type == EventType.TIME_UPDATE) {
+                    eventManager.broadcast(event);
+                }
             }
         } catch (IOException e) { };
     }
