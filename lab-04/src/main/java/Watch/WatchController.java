@@ -45,9 +45,11 @@ public class WatchController implements IPublisher {
     }
 
     public void setDisabled() {
-        thread.interrupt();
-        thread = null;
-        broadcastTime();
+        if (thread != null) {
+            thread.interrupt();
+            thread = null;
+            broadcastTime();
+        }
     }
 
     public void reset() {

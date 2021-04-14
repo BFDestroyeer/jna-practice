@@ -7,6 +7,7 @@ import Watch.IWatch;
 import Watch.WatchController;
 import Watch.WatchType;
 
+import java.sql.Time;
 import java.util.LinkedList;
 
 public class ServerModel implements IPublisher, IListener {
@@ -44,6 +45,16 @@ public class ServerModel implements IPublisher, IListener {
 
     public void reset() {
         watchController.reset();
+    }
+
+    public void timeUpdate(TimeEvent event) {
+        try {
+            watch.setHours(event.getHours());
+            watch.setMinutes(event.getMinutes());
+            watch.setSeconds(event.getSeconds());
+        } catch (Exception e) { }
+        TimeEvent timeEvent = watch.getTimeUpdateEvent();
+        eventManager.broadcast(timeEvent);
     }
 
     @Override

@@ -6,6 +6,7 @@ import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.sql.Time;
 
 public class ClientController implements IPublisher {
     private EventManager eventManager = new EventManager();
@@ -50,6 +51,25 @@ public class ClientController implements IPublisher {
         String data = JSON.get().toJson(event);
         send(data);
     }
+
+    public void requestReset() {
+        AbstractEvent event = new AbstractEvent(EventType.REQUEST_RESET);
+        String data = JSON.get().toJson(event);
+        send(data);
+    }
+
+    public void requestPause() {
+        AbstractEvent event = new AbstractEvent(EventType.REQUEST_PAUSE);
+        String data = JSON.get().toJson(event);
+        send(data);
+    }
+
+    public void requestSetTime(int hours, int minutes, int seconds) {
+        TimeEvent event = new TimeEvent(EventType.REQUEST_TIME_UPDATE, hours, minutes, seconds);
+        String data = JSON.get().toJson(event);
+        send(data);
+    }
+
 
     private void send(String data) {
         if (thread == null) {

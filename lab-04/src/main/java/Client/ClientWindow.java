@@ -14,6 +14,10 @@ public class ClientWindow implements IListener {
     private JButton button_connect;
     private JPanel jpanel;
     private JLabel label_time;
+    private JButton button_setTime;
+    private JSpinner spinner_seconds;
+    private JSpinner spinner_minutes;
+    private JSpinner spinner_hours;
 
     ClientController clientController;
 
@@ -23,6 +27,9 @@ public class ClientWindow implements IListener {
 
         button_connect.addActionListener(e -> this.clientController.connect());
         button_start.addActionListener(e -> this.clientController.requestStart());
+        button_reset.addActionListener(e -> this.clientController.requestReset());
+        button_pause.addActionListener(e -> this.clientController.requestPause());
+        button_setTime.addActionListener(e -> this.onSetTime());
     }
 
     public void signal(AbstractEvent event) {
@@ -31,6 +38,11 @@ public class ClientWindow implements IListener {
             String text = timeEvent.getHours() + ":" + timeEvent.getMinutes() + ":" + timeEvent.getSeconds();
             label_time.setText(text);
         }
+    }
+
+    public void onSetTime() {
+        this.clientController.requestSetTime((int) spinner_hours.getValue(), (int) spinner_minutes.getValue(),
+                (int) spinner_seconds.getValue());
     }
 
     public JPanel getJPanel() {

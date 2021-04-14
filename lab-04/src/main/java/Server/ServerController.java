@@ -40,11 +40,18 @@ public class ServerController extends Thread implements IListener {
                 String data = dataInputStream.readUTF();
                 AbstractEvent event = JSON.get().fromJson(data, AbstractEvent.class);
                 if (event.type == EventType.REQUEST_START) {
-                    serverModel.start();
+                    this.serverModel.start();
+                    continue;
                 } else if (event.type == EventType.REQUEST_RESET) {
-                    serverModel.reset();
+                    this.serverModel.reset();
+                    continue;
                 } else if (event.type == EventType.REQUEST_PAUSE) {
-                    serverModel.pause();
+                    this.serverModel.pause();
+                    continue;
+                }
+                TimeEvent timeEvent = JSON.get().fromJson(data, TimeEvent.class);
+                if (event.type == EventType.REQUEST_TIME_UPDATE) {
+                    this.serverModel.timeUpdate(timeEvent);
                 }
             }
         } catch (IOException e) { };
