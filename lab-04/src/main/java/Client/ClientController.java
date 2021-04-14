@@ -43,6 +43,7 @@ public class ClientController implements IPublisher {
 
             this.thread = new Thread(this::run);
             this.thread.start();
+            System.out.println("Client connected");
         } catch (IOException e) { };
     }
 

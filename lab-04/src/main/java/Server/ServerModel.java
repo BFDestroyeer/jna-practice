@@ -50,6 +50,18 @@ public class ServerModel implements IPublisher, IListener {
 
     }
 
+    public LinkedList<TimeEvent> getAlarmClocksArmedList() {
+        LinkedList<TimeEvent> result = new LinkedList<>();
+        for (IAlarmClock alarmClock : this.alarmClocks) {
+            try {
+                TimeEvent event = new TimeEvent(EventType.ALARM_CLOCK_ARMED, alarmClock.getAlarmHours(),
+                        alarmClock.getAlarmMinutes(), alarmClock.getAlarmSeconds());
+                result.push(event);
+            } catch (Exception e) { };
+        }
+        return result;
+    }
+
     public void start() {
         watchController.setEnabled();
     }

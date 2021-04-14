@@ -5,6 +5,8 @@ import Event.*;
 
 import java.io.*;
 import java.net.Socket;
+import java.sql.Time;
+import java.util.LinkedList;
 
 public class ServerController extends Thread implements IListener {
     private EventManager eventManager = new EventManager();
@@ -27,6 +29,12 @@ public class ServerController extends Thread implements IListener {
         } catch (IOException e) { };
 
         serverModel.addListener(this);
+
+        LinkedList<TimeEvent> list = serverModel.getAlarmClocksArmedList();
+        for (TimeEvent event : list) {
+            sendEvent(event);
+        }
+
         start();
     }
 

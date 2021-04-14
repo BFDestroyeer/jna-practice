@@ -50,8 +50,10 @@ public class ClientWindow implements IListener {
             String text = timeEvent.getHours() + ":" + timeEvent.getMinutes() + ":" + timeEvent.getSeconds();
             label_time.setText(text);
         } else if (timeEvent.type == EventType.ALARM_CLOCK_ARMED) {
-            this.alarm_text += timeEvent.getHours() + ":" + timeEvent.getMinutes() + ":" + timeEvent.getSeconds() + " ";
-            label_alarms.setText(alarm_text);
+            synchronized (this.alarm_text) {
+                this.alarm_text += timeEvent.getHours() + ":" + timeEvent.getMinutes() + ":" + timeEvent.getSeconds() + " ";
+                label_alarms.setText(alarm_text);
+            }
         }
     }
 
