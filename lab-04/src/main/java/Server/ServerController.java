@@ -5,7 +5,6 @@ import Event.*;
 
 import java.io.*;
 import java.net.Socket;
-import java.sql.Time;
 
 public class ServerController extends Thread implements IListener {
     private EventManager eventManager = new EventManager();
@@ -53,12 +52,15 @@ public class ServerController extends Thread implements IListener {
                 if (event.type == EventType.REQUEST_TIME_UPDATE) {
                     this.serverModel.timeUpdate(timeEvent);
                 }
+                if (event.type == EventType.REQUEST_ADD_ALARM_CLOCK) {
+                    this.serverModel.addAlarmClock(timeEvent);
+                }
             }
         } catch (IOException e) { };
     }
 
     public void sendEvent(AbstractEvent event) {
-        if (event.type == EventType.TIME_UPDATE) {
+        if (event.type == EventType.TIME_UPDATE || event.type == EventType.ALARM_CLOCK_ARMED) {
             TimeEvent timeEvent = (TimeEvent) event;
             String data = JSON.get().toJson(timeEvent);
             try {
@@ -70,15 +72,5 @@ public class ServerController extends Thread implements IListener {
     @Override
     public void signal(AbstractEvent event) {
         sendEvent(event);
-    }
-
-    private void onRequestAddAlarmClock(TimeEvent event) {
-        AdvancedAlarmClock alarmClock = new AdvancedAlarmClock();
-        try {
-            alarmClock.setAlarmHours(event.getHours());
-            alarmClock.setAlarmMinutes(event.getMinutes());
-            alarmClock.setAlarmSeconds(event.getSeconds());
-        } catch (Exception e) { };
-        serverModel.pushAlarmClock(alarmClock);
     }
 }

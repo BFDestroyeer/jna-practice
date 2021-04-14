@@ -1,5 +1,6 @@
 package Server;
 
+import AlarmClock.AdvancedAlarmClock;
 import AlarmClock.IAlarmClock;
 import Event.*;
 import Watch.BWatch;
@@ -31,7 +32,20 @@ public class ServerModel implements IPublisher, IListener {
         eventManager.unsubscribe(listener);
     }
 
-    public void pushAlarmClock(IAlarmClock alarmClock) {
+    public void addAlarmClock(TimeEvent event) {
+        AdvancedAlarmClock alarmClock = new AdvancedAlarmClock();
+        try {
+            alarmClock.setAlarmHours(event.getHours());
+            alarmClock.setAlarmMinutes(event.getMinutes());
+            alarmClock.setAlarmSeconds(event.getSeconds());
+        } catch (Exception e) { };
+        try {
+            TimeEvent alarmArmedEvent = new TimeEvent(EventType.ALARM_CLOCK_ARMED, event.getHours(),
+                    event.getMinutes(), event.getSeconds());
+            alarmClocks.push(alarmClock);
+            alarmClock.addListener(this);
+            eventManager.broadcast(alarmArmedEvent);
+        } catch (Exception e) { }
 
     }
 
@@ -59,7 +73,7 @@ public class ServerModel implements IPublisher, IListener {
 
     @Override
     public void signal(AbstractEvent event) {
-        if (event.type == EventType.TIME_UPDATE) {
+        if (event.type == EventType.TIME_UPDATE || event.type == EventType.ALARM) {
             eventManager.broadcast(event);
         }
     }

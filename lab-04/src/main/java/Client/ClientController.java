@@ -70,6 +70,12 @@ public class ClientController implements IPublisher {
         send(data);
     }
 
+    public void requestAddAlarm(int hours, int minutes, int seconds) {
+        TimeEvent event = new TimeEvent(EventType.REQUEST_ADD_ALARM_CLOCK, hours, minutes, seconds);
+        String data = JSON.get().toJson(event);
+        send(data);
+    }
+
 
     private void send(String data) {
         if (thread == null) {
@@ -87,7 +93,7 @@ public class ClientController implements IPublisher {
             while (true) {
                 String data = this.dataInputStream.readUTF();
                 TimeEvent event = JSON.get().fromJson(data, TimeEvent.class);
-                if (event.type == EventType.TIME_UPDATE) {
+                if (event.type == EventType.TIME_UPDATE || event.type == EventType.ALARM_CLOCK_ARMED) {
                     eventManager.broadcast(event);
                 }
             }
