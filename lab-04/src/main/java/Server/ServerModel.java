@@ -1,10 +1,7 @@
 package Server;
 
 import AlarmClock.IAlarmClock;
-import Event.AbstractEvent;
-import Event.EventManager;
-import Event.IListener;
-import Event.IPublisher;
+import Event.*;
 import Watch.BWatch;
 import Watch.IWatch;
 import Watch.WatchController;
@@ -18,6 +15,10 @@ public class ServerModel implements IPublisher, IListener {
     private IWatch watch = BWatch.build(WatchType.AdvancedWatch, "", 0);
     private WatchController watchController =  new WatchController(this.watch);
     private LinkedList<IAlarmClock> alarmClocks = new LinkedList<>();
+
+    ServerModel() {
+        watchController.addListener(this);
+    }
 
     @Override
     public void addListener(IListener listener) {
@@ -33,9 +34,23 @@ public class ServerModel implements IPublisher, IListener {
 
     }
 
+    public void start() {
+        watchController.setEnabled();
+    }
+
+    public void pause() {
+        watchController.setDisabled();
+    }
+
+    public void reset() {
+        watchController.reset();
+    }
+
     @Override
     public void signal(AbstractEvent event) {
-
+        if (event.type == EventType.TIME_UPDATE) {
+            eventManager.broadcast(event);
+        }
     }
 
 }

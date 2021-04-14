@@ -21,12 +21,12 @@
           <grid row="2" column="0" row-span="1" col-span="4" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
         </constraints>
       </vspacer>
-      <component id="5bff9" class="javax.swing.JButton" binding="stopButton" default-binding="true">
+      <component id="5bff9" class="javax.swing.JButton" binding="button_reset">
         <constraints>
           <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="Stop"/>
+          <text value="Reset"/>
         </properties>
       </component>
       <component id="3b321" class="javax.swing.JButton" binding="button_start">
@@ -37,7 +37,7 @@
           <text value="Start"/>
         </properties>
       </component>
-      <component id="ca78e" class="javax.swing.JButton" binding="pauseButton" default-binding="true">
+      <component id="ca78e" class="javax.swing.JButton" binding="button_pause">
         <constraints>
           <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>

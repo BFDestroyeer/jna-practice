@@ -38,16 +38,20 @@ public class ServerController extends Thread implements IListener {
             dataInputStream = new DataInputStream(inputStream);
             while (true) {
                 String data = dataInputStream.readUTF();
-                /*AbstractEvent event; // TODO: Get from stream
-                if (event.type == EventType.REQUEST_ADD_ALARM_CLOCK) {
-                    onRequestAddAlarmClock((TimeEvent) event);
-                }*/
+                AbstractEvent event = JSON.get().fromJson(data, AbstractEvent.class);
+                if (event.type == EventType.REQUEST_START) {
+                    serverModel.start();
+                } else if (event.type == EventType.REQUEST_RESET) {
+                    serverModel.reset();
+                } else if (event.type == EventType.REQUEST_PAUSE) {
+                    serverModel.pause();
+                }
             }
         } catch (IOException e) { };
     }
 
     public void sendEvent(AbstractEvent event) {
-        //TODO: json
+
     }
 
     @Override

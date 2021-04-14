@@ -1,9 +1,6 @@
 package Client;
 
-import Event.AbstractEvent;
-import Event.EventManager;
-import Event.EventType;
-import Event.IListener;
+import Event.*;
 
 import java.io.*;
 import java.net.InetAddress;
@@ -42,6 +39,8 @@ public class ClientController {
 
     public void requestStart() {
         AbstractEvent event = new AbstractEvent(EventType.REQUEST_START);
+        String data = JSON.get().toJson(event);
+        send(data);
     }
 
     private void send(String data) {

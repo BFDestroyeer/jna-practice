@@ -8,6 +8,8 @@ public class JSON {
             .setPrettyPrinting()
             .registerTypeAdapter(AbstractEvent.class, new AbstractEventSerializer())
             .registerTypeAdapter(AbstractEvent.class, new AbstractEventDeserializer())
+            .registerTypeAdapter(TimeEvent.class, new TimeEventDeserializer())
+            .registerTypeAdapter(TimeEvent.class, new TimeEventDeserializer())
             .create();
 
     public static Gson get() {

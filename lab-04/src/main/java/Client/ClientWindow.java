@@ -3,9 +3,9 @@ package Client;
 import javax.swing.*;
 
 public class ClientWindow {
-    private JButton stopButton;
+    private JButton button_reset;
     private JButton button_start;
-    private JButton pauseButton;
+    private JButton button_pause;
     private JButton button_connect;
     private JPanel jpanel;
 
