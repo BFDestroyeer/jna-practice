@@ -7,12 +7,11 @@ import Events.IPublisher;
 public class WatchController implements IPublisher {
     IWatch watch;
     Thread thread = null;
+    EventManager manager = new EventManager();
 
     public WatchController(IWatch watch) {
         this.watch = watch;
     }
-
-    EventManager manager = new EventManager();
 
     @Override
     public void addListener(IListener listener) {

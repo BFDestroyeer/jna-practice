@@ -5,9 +5,6 @@ import Events.ICallable;
 import Events.IListener;
 import Watch.TimeEvent;
 
-import java.awt.*;
-import java.util.LinkedList;
-
 public class SimpleAlarmClock implements IAlarmClock, IListener {
     protected int hours;
     protected int minutes;
