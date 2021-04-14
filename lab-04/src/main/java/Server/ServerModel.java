@@ -62,6 +62,10 @@ public class ServerModel implements IPublisher, IListener {
         return result;
     }
 
+    public TimeEvent getTimeUpdateEvent() {
+        return watch.getTimeUpdateEvent();
+    }
+
     public void start() {
         watchController.setEnabled();
     }

@@ -35,6 +35,9 @@ public class ServerController extends Thread implements IListener {
             sendEvent(event);
         }
 
+        TimeEvent timeEvent = serverModel.getTimeUpdateEvent();
+        sendEvent(timeEvent);
+
         start();
     }
 
