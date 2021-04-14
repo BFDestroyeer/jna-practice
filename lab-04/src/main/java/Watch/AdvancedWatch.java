@@ -1,6 +1,7 @@
 package Watch;
 
-import AlarmClock.IAlarmClock;
+import Event.EventType;
+import Event.TimeEvent;
 
 /**
  * Watches with hour, minute and second hands
@@ -50,7 +51,7 @@ public class AdvancedWatch extends Watch.SimpleWatch {
     }
 
     @Override
-    public TimeEvent getTimeEvent() {
-        return new TimeEvent(getHours(), getMinutes(), getSeconds());
+    public TimeEvent getTimeUpdateEvent() {
+        return new TimeEvent(EventType.TIME_UPDATE, getHours(), getMinutes(), getSeconds());
     }
 }

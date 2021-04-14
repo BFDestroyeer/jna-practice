@@ -1,7 +1,8 @@
 package AlarmClock;
 
-import Events.AbstractEvent;
-import Watch.TimeEvent;
+import Event.AbstractEvent;
+import Event.EventType;
+import Event.TimeEvent;
 
 public class AdvancedAlarmClock extends SimpleAlarmClock {
     private int seconds;
@@ -12,10 +13,12 @@ public class AdvancedAlarmClock extends SimpleAlarmClock {
 
     @Override
     public void signal(AbstractEvent event) {
-        TimeEvent timeEvent = (TimeEvent) event;
-        if (timeEvent.getHours() == this.hours && timeEvent.getMinutes() == minutes &&
-                timeEvent.getSeconds() == this.seconds) {
-            slot.call();
+        if (event.type == EventType.WATCH_UPDATED) {
+            TimeEvent timeEvent = (TimeEvent) event;
+            if (timeEvent.getHours() == this.hours && timeEvent.getMinutes() == this.minutes &&
+                    timeEvent.getSeconds() == this.seconds) {
+                eventManager.broadcast(new AbstractEvent(EventType.ALARM));
+            }
         }
     }
 

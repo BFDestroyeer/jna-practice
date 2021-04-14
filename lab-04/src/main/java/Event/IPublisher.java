@@ -1,4 +1,4 @@
-package Events;
+package Event;
 
 public interface IPublisher {
     void addListener(IListener listener);

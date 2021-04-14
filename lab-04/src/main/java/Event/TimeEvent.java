@@ -1,18 +1,18 @@
-package Watch;
-
-import Events.AbstractEvent;
+package Event;
 
 public class TimeEvent extends AbstractEvent {
     protected int hours = 0;
     protected int minutes = 0;
     protected int seconds = 0;
 
-    public TimeEvent(int hours, int minutes) {
+    public TimeEvent(EventType type, int hours, int minutes) {
+        super(type);
         this.hours = hours;
         this.minutes = minutes;
     }
 
-    public TimeEvent(int hours, int minutes, int seconds) {
+    public TimeEvent(EventType type, int hours, int minutes, int seconds) {
+        super(type);
         this.hours = hours;
         this.minutes = minutes;
         this.seconds = seconds;

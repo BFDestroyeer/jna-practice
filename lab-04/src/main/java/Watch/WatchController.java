@@ -1,8 +1,8 @@
 package Watch;
 
-import Events.EventManager;
-import Events.IListener;
-import Events.IPublisher;
+import Event.EventManager;
+import Event.IListener;
+import Event.IPublisher;
 
 public class WatchController implements IPublisher {
     IWatch watch;
@@ -24,7 +24,7 @@ public class WatchController implements IPublisher {
     }
 
     protected void broadcastTime() {
-        manager.broadcast(watch.getTimeEvent());
+        manager.broadcast(watch.getTimeUpdateEvent());
     }
 
     public void setEnabled() {

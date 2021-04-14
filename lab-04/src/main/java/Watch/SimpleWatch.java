@@ -1,8 +1,7 @@
 package Watch;
 
-import Events.EventManager;
-import Events.IListener;
-import Events.IPublisher;
+import Event.EventType;
+import Event.TimeEvent;
 
 /**
  * Watches with hour and minute hands
@@ -98,7 +97,7 @@ public class SimpleWatch implements IWatch {
     }
 
     @Override
-    public TimeEvent getTimeEvent() {
-        return new TimeEvent(getHours(), getMinutes());
+    public TimeEvent getTimeUpdateEvent() {
+        return new TimeEvent(EventType.TIME_UPDATE, getHours(), getMinutes());
     }
 }

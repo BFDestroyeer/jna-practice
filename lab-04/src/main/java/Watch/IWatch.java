@@ -1,5 +1,7 @@
 package Watch;
 
+import Event.TimeEvent;
+
 public interface IWatch {
     void setHours(int hours) throws Exception;
     void setMinutes(int minutes) throws Exception;
@@ -16,5 +18,5 @@ public interface IWatch {
     int getTickTime();
     void doTick();
 
-    TimeEvent getTimeEvent();
+    TimeEvent getTimeUpdateEvent();
 }

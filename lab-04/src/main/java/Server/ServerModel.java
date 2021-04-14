@@ -1,9 +1,10 @@
 package Server;
 
 import AlarmClock.IAlarmClock;
-import Events.EventManager;
-import Events.IListener;
-import Events.IPublisher;
+import Event.AbstractEvent;
+import Event.EventManager;
+import Event.IListener;
+import Event.IPublisher;
 import Watch.BWatch;
 import Watch.IWatch;
 import Watch.WatchController;
@@ -11,7 +12,7 @@ import Watch.WatchType;
 
 import java.util.LinkedList;
 
-public class ServerModel implements IPublisher {
+public class ServerModel implements IPublisher, IListener {
     private EventManager eventManager = new EventManager();
 
     private IWatch watch = BWatch.build(WatchType.AdvancedWatch, "", 0);
@@ -29,6 +30,12 @@ public class ServerModel implements IPublisher {
     }
 
     public void pushAlarmClock(IAlarmClock alarmClock) {
-        alarmClock
+
     }
+
+    @Override
+    public void signal(AbstractEvent event) {
+
+    }
+
 }

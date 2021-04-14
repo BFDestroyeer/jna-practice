@@ -1,4 +1,4 @@
-package Events;
+package Event;
 
 import java.util.LinkedList;
 
