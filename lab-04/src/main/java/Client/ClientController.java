@@ -92,9 +92,15 @@ public class ClientController implements IPublisher {
             this.dataInputStream = new DataInputStream(this.inputStream);
             while (true) {
                 String data = this.dataInputStream.readUTF();
-                TimeEvent event = JSON.get().fromJson(data, TimeEvent.class);
-                if (event.type == EventType.TIME_UPDATE || event.type == EventType.ALARM_CLOCK_ARMED) {
+                AbstractEvent event = JSON.get().fromJson(data, AbstractEvent.class);
+                if (event.type == EventType.ALARM) {
                     eventManager.broadcast(event);
+                    continue;
+                }
+                AbstractEvent timeEvent = JSON.get().fromJson(data, TimeEvent.class);
+                if (timeEvent.type == EventType.TIME_UPDATE || timeEvent.type == EventType.ALARM_CLOCK_ARMED ||
+                        timeEvent.type == EventType.ALARM) {
+                    eventManager.broadcast(timeEvent);
                 }
             }
         } catch (IOException e) { };

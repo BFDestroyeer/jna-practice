@@ -25,7 +25,7 @@ public class SimpleAlarmClock implements IAlarmClock, IListener, IPublisher {
 
     @Override
     public void signal(AbstractEvent event) {
-        if (event.type == EventType.WATCH_UPDATED) {
+        if (event.type == EventType.TIME_UPDATE) {
             TimeEvent timeEvent = (TimeEvent) event;
             if (timeEvent.getHours() == this.hours && timeEvent.getMinutes() == this.minutes) {
                 eventManager.broadcast(new AbstractEvent(EventType.ALARM));

@@ -44,6 +44,7 @@ public class ServerModel implements IPublisher, IListener {
                     event.getMinutes(), event.getSeconds());
             alarmClocks.push(alarmClock);
             alarmClock.addListener(this);
+            watchController.addListener(alarmClock);
             eventManager.broadcast(alarmArmedEvent);
         } catch (Exception e) { }
 

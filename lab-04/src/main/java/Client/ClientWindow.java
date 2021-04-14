@@ -41,6 +41,10 @@ public class ClientWindow implements IListener {
     }
 
     public void signal(AbstractEvent event) {
+        if (event.type == EventType.ALARM) {
+            JOptionPane.showMessageDialog(new JFrame(), "ALARM!!!");
+            return;
+        }
         TimeEvent timeEvent = (TimeEvent) event;
         if (timeEvent.type == EventType.TIME_UPDATE) {
             String text = timeEvent.getHours() + ":" + timeEvent.getMinutes() + ":" + timeEvent.getSeconds();

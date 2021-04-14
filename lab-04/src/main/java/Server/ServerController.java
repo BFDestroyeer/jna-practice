@@ -66,6 +66,11 @@ public class ServerController extends Thread implements IListener {
             try {
                 dataOutputStream.writeUTF(data);
             } catch (IOException e) { }
+        } else if (event.type == EventType.ALARM) {
+            String data = JSON.get().toJson(event);
+            try {
+                dataOutputStream.writeUTF(data);
+            } catch (IOException e) { }
         }
     }
 
