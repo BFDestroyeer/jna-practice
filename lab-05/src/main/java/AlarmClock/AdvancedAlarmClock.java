@@ -42,4 +42,13 @@ public class AdvancedAlarmClock extends SimpleAlarmClock {
     public int getAlarmSeconds() {
         return this.seconds;
     }
+
+    @Override
+    public boolean equals(IAlarmClock alarmClock) {
+        try {
+            return this.hours == alarmClock.getAlarmHours() && this.minutes == alarmClock.getAlarmMinutes() &&
+                    this.seconds == alarmClock.getAlarmSeconds();
+        } catch (Exception e) { }
+        return false;
+    }
 }

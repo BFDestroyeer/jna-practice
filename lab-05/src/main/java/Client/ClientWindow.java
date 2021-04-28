@@ -57,16 +57,20 @@ public class ClientWindow implements IListener {
             synchronized ( this.alarm_text ) {
                 String alarmTime = timeEvent.getHours() + ":" + timeEvent.getMinutes() + ":" + timeEvent.getSeconds() + " ";
                 alarmsTime.add(alarmTime);
-                label_alarms.setText(alarm_text + alarmTime);
+                alarm_text += alarmTime;
+                label_alarms.setText(alarm_text);
             }
         } else if (timeEvent.type == EventType.ALARM_CLOCK_REMOVED) {
             synchronized ( this.alarm_text ) {
                 String alarmTime = timeEvent.getHours() + ":" + timeEvent.getMinutes() + ":" + timeEvent.getSeconds() + " ";
-                alarmsTime.remove(alarmTime);
+                while (alarmsTime.contains(alarmTime)) {
+                    alarmsTime.remove(alarmTime);
+                }
                 alarm_text = "";
-                for (String alarm : alarmsTime) {
+                for (String alarm : this.alarmsTime) {
                     alarm_text += alarm;
                 }
+                label_alarms.setText(alarm_text);
             }
         }
     }

@@ -74,7 +74,8 @@ public class ServerController extends Thread implements IListener {
     }
 
     public void sendEvent(AbstractEvent event) {
-        if (event.type == EventType.TIME_UPDATE || event.type == EventType.ALARM_CLOCK_ARMED) {
+        if (event.type == EventType.TIME_UPDATE || event.type == EventType.ALARM_CLOCK_ARMED
+                || event.type == EventType.ALARM_CLOCK_REMOVED) {
             TimeEvent timeEvent = (TimeEvent) event;
             String data = JSON.get().toJson(timeEvent);
             try {

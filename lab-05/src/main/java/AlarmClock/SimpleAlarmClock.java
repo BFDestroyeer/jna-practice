@@ -85,4 +85,11 @@ public class SimpleAlarmClock implements IAlarmClock, IListener, IPublisher {
     public int getAlarmSeconds() throws Exception {
         throw new Exception("Not implemented");
     }
+
+    public boolean equals(IAlarmClock alarmClock) {
+        try {
+            return this.hours == alarmClock.getAlarmHours() && this.minutes == alarmClock.getAlarmMinutes();
+        } catch (Exception e) { }
+        return false;
+    }
 }

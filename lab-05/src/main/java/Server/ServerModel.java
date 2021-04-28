@@ -2,6 +2,7 @@ package Server;
 
 import AlarmClock.AdvancedAlarmClock;
 import AlarmClock.IAlarmClock;
+import AlarmClock.SimpleAlarmClock;
 import Event.*;
 import Hibernate.DatabaseProvider;
 import Hibernate.DatabaseSessionFactory;
@@ -22,7 +23,7 @@ public class ServerModel implements IPublisher, IListener {
 
     private IWatch watch = BWatch.build(WatchType.AdvancedWatch, "", 0);
     private WatchController watchController =  new WatchController(this.watch);
-    private LinkedList<IAlarmClock> alarmClocks = new LinkedList<>();
+    private LinkedList<AdvancedAlarmClock> alarmClocks = new LinkedList<>();
 
     ServerModel() {
         watchController.addListener(this);
@@ -54,22 +55,28 @@ public class ServerModel implements IPublisher, IListener {
             databaseProvider.insertAlarm(alarmClock);
             eventManager.broadcast(alarmArmedEvent);
         } catch (Exception e) { }
-
     }
 
     public void removeAlarmClock(TimeEvent event) {
-        for (IAlarmClock alarmClock : this.alarmClocks) {
+        AdvancedAlarmClock eventAlarmClock = new AdvancedAlarmClock();
+        try {
+            eventAlarmClock.setAlarmHours(event.getHours());
+            eventAlarmClock.setAlarmMinutes(event.getMinutes());
+            eventAlarmClock.setAlarmSeconds(event.getSeconds());
+        } catch (Exception e) { }
+
+        for (AdvancedAlarmClock alarmClock : this.alarmClocks) {
             try {
-                if (alarmClock.getAlarmHours() == event.getHours() && alarmClock.getAlarmMinutes() == event.getMinutes() &&
-                alarmClock.getAlarmSeconds() == event.getSeconds()) {
+                if (alarmClock.equals(eventAlarmClock)) {
+                    alarmClock.removeListener(this);
                     TimeEvent removeEvent = event;
                     removeEvent.type = EventType.ALARM_CLOCK_REMOVED;
                     eventManager.broadcast(removeEvent);
                     databaseProvider.deleteAlarm(alarmClock);
-                    alarmClocks.remove(alarmClock);
+                    //alarmClocks.remove(alarmClock);
                 }
             } catch (Exception e) { };
-
+            //TODO: REMOVE MEMORY LEAK IN CASE I DON'T DELETE ALARM CLOCK FROM ALARM CLOCKS
         }
     }
 
