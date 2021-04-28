@@ -18,12 +18,14 @@ public class DatabaseSessionFactory {
     public static SessionFactory get() {
         if (sessionFactory == null) {
             try {
-                Configuration configuration = new Configuration().configure("/hibernate.xml");
+                Configuration configuration = new Configuration().configure("/hibernate.cfg.xml");
                 configuration.addAnnotatedClass(SimpleAlarmClock.class);
                 configuration.addAnnotatedClass(AdvancedAlarmClock.class);
                 StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties());
                 sessionFactory = configuration.buildSessionFactory(builder.build());
-            } catch (Exception e) { };
+            } catch (Exception e) {
+                e.printStackTrace();
+            };
         }
         return sessionFactory;
     }

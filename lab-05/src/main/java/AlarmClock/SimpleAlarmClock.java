@@ -2,10 +2,28 @@ package AlarmClock;
 
 import Event.*;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "SimpleAlarmClocks")
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class SimpleAlarmClock implements IAlarmClock, IListener, IPublisher {
+    @Column
     protected int hours;
+
+    @Column
     protected int minutes;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column
+    protected  int id;
+
+    public int getId() {
+        return id;
+    }
+
+    @Transient
     protected  EventManager eventManager = new EventManager();
 
     public SimpleAlarmClock() {

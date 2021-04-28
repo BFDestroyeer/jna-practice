@@ -23,6 +23,7 @@ public class Server {
 
     public void run() {
         try {
+            serverModel.fetchAlarms();
             this.serverSocket = new ServerSocket(port, 0, host);
             while (true) {
                 Socket socket = this.serverSocket.accept();

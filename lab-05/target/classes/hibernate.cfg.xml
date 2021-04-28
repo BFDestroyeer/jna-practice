@@ -7,12 +7,12 @@
         <property name="format_sql">true</property>
         <property name="dialect">org.hibernate.dialect.SQLiteDialect</property>
         <property name="connection.driver_class">org.sqlite.JDBC</property>
-        <property name="hibernate.connection.url">jdbc:sqlite:resources\db.sqlite3</property>
+        <property name="hibernate.connection.url">jdbc:sqlite:\alarmClocks.sqlite3</property>
         <property name="hibernate.connection.username" />
         <property name="hibernate.connection.password" />
         <property name="hibernate.connection.autocommit">true</property>
-        <!--property name="hibernate.hbm2ddl.auto">create</property-->
+        <property name="hibernate.hbm2ddl.auto">create</property>
         <!--property name="hibernate.hbm2ddl.auto">update</property-->
-        <property name="hibernate.hbm2ddl.auto">validate</property>
+        <!--property name="hibernate.hbm2ddl.auto">validate</property-->
     </session-factory>
 </hibernate-configuration>

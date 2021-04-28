@@ -4,10 +4,18 @@ import Event.AbstractEvent;
 import Event.EventType;
 import Event.TimeEvent;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "AdvancedAlarmClocks")
 public class AdvancedAlarmClock extends SimpleAlarmClock {
+    @Column
     private int seconds;
 
     public AdvancedAlarmClock() {
+        super();
         seconds = 0;
     }
 

@@ -3,16 +3,22 @@ package Server;
 import AlarmClock.AdvancedAlarmClock;
 import AlarmClock.IAlarmClock;
 import Event.*;
+import Hibernate.DatabaseProvider;
+import Hibernate.DatabaseSessionFactory;
 import Watch.BWatch;
 import Watch.IWatch;
 import Watch.WatchController;
 import Watch.WatchType;
+import org.hibernate.Session;
 
 import java.sql.Time;
 import java.util.LinkedList;
+import java.util.List;
 
 public class ServerModel implements IPublisher, IListener {
     private EventManager eventManager = new EventManager();
+
+    private DatabaseProvider databaseProvider = new DatabaseProvider();
 
     private IWatch watch = BWatch.build(WatchType.AdvancedWatch, "", 0);
     private WatchController watchController =  new WatchController(this.watch);
@@ -45,9 +51,24 @@ public class ServerModel implements IPublisher, IListener {
             alarmClocks.push(alarmClock);
             alarmClock.addListener(this);
             watchController.addListener(alarmClock);
+            databaseProvider.insertAlarm(alarmClock);
             eventManager.broadcast(alarmArmedEvent);
         } catch (Exception e) { }
 
+    }
+
+    public void fetchAlarms() {
+        Session session = DatabaseSessionFactory.get().openSession();
+        List<AdvancedAlarmClock> rawAlarms = session.createQuery("from AdvancedAlarmClock", AdvancedAlarmClock.class).getResultList();
+        alarmClocks.clear();
+        if (rawAlarms != null) {
+            for (AdvancedAlarmClock alarmClock : rawAlarms) {
+                alarmClocks.push(alarmClock);
+                alarmClock.addListener(this);
+                watchController.addListener(alarmClock);
+            }
+        }
+        session.close();
     }
 
     public LinkedList<TimeEvent> getAlarmClocksArmedList() {
