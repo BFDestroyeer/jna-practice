@@ -64,7 +64,7 @@ public class ServerModel implements IPublisher, IListener {
             eventAlarmClock.setAlarmMinutes(event.getMinutes());
             eventAlarmClock.setAlarmSeconds(event.getSeconds());
         } catch (Exception e) { }
-
+        LinkedList<Integer> idToRemove = new LinkedList<>();
         for (AdvancedAlarmClock alarmClock : this.alarmClocks) {
             try {
                 if (alarmClock.equals(eventAlarmClock)) {
@@ -73,10 +73,12 @@ public class ServerModel implements IPublisher, IListener {
                     removeEvent.type = EventType.ALARM_CLOCK_REMOVED;
                     eventManager.broadcast(removeEvent);
                     databaseProvider.deleteAlarm(alarmClock);
-                    //alarmClocks.remove(alarmClock);
+                    idToRemove.push(alarmClock.getId());
                 }
             } catch (Exception e) { };
-            //TODO: REMOVE MEMORY LEAK IN CASE I DON'T DELETE ALARM CLOCK FROM ALARM CLOCKS
+        }
+        for (Integer id : idToRemove) {
+            alarmClocks.removeIf(i -> i.getId() == id);
         }
     }
 

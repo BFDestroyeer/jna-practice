@@ -23,6 +23,10 @@ public class SimpleAlarmClock implements IAlarmClock, IListener, IPublisher {
         return id;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     @Transient
     protected  EventManager eventManager = new EventManager();
 
