@@ -77,6 +77,12 @@ public class ClientController implements IPublisher {
         send(data);
     }
 
+    public void requestRemoveAlarm(int hours, int minutes, int seconds) {
+        TimeEvent event = new TimeEvent(EventType.REQUEST_REMOVE_ALARM_CLOCK, hours, minutes, seconds);
+        String data = JSON.get().toJson(event);
+        send(data);
+    }
+
 
     private void send(String data) {
         if (thread == null) {
@@ -100,7 +106,7 @@ public class ClientController implements IPublisher {
                 }
                 AbstractEvent timeEvent = JSON.get().fromJson(data, TimeEvent.class);
                 if (timeEvent.type == EventType.TIME_UPDATE || timeEvent.type == EventType.ALARM_CLOCK_ARMED ||
-                        timeEvent.type == EventType.ALARM) {
+                        timeEvent.type == EventType.ALARM || timeEvent.type == EventType.ALARM_CLOCK_REMOVED) {
                     eventManager.broadcast(timeEvent);
                 }
             }

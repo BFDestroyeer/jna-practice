@@ -6,6 +6,7 @@ import Event.IListener;
 import Event.TimeEvent;
 
 import javax.swing.*;
+import java.util.ArrayList;
 
 public class ClientWindow implements IListener {
     private JButton button_reset;
@@ -23,10 +24,12 @@ public class ClientWindow implements IListener {
     private JSpinner spinner_alarmSeconds;
     private JButton button_addAlarm;
     private JLabel label_alarms;
+    private JButton button_removeAlarm;
 
     ClientController clientController;
 
     String alarm_text = "";
+    ArrayList<String> alarmsTime = new ArrayList<>();
 
     ClientWindow(ClientController clientController) {
         this.clientController = clientController;
@@ -38,6 +41,7 @@ public class ClientWindow implements IListener {
         button_pause.addActionListener(e -> this.clientController.requestPause());
         button_setTime.addActionListener(e -> this.onSetTime());
         button_addAlarm.addActionListener(e -> this.onAddAlarm());
+        button_removeAlarm.addActionListener(e -> this.onRemoveAlarm());
     }
 
     public void signal(AbstractEvent event) {
@@ -50,9 +54,19 @@ public class ClientWindow implements IListener {
             String text = timeEvent.getHours() + ":" + timeEvent.getMinutes() + ":" + timeEvent.getSeconds();
             label_time.setText(text);
         } else if (timeEvent.type == EventType.ALARM_CLOCK_ARMED) {
-            synchronized (this.alarm_text) {
-                this.alarm_text += timeEvent.getHours() + ":" + timeEvent.getMinutes() + ":" + timeEvent.getSeconds() + " ";
-                label_alarms.setText(alarm_text);
+            synchronized ( this.alarm_text ) {
+                String alarmTime = timeEvent.getHours() + ":" + timeEvent.getMinutes() + ":" + timeEvent.getSeconds() + " ";
+                alarmsTime.add(alarmTime);
+                label_alarms.setText(alarm_text + alarmTime);
+            }
+        } else if (timeEvent.type == EventType.ALARM_CLOCK_REMOVED) {
+            synchronized ( this.alarm_text ) {
+                String alarmTime = timeEvent.getHours() + ":" + timeEvent.getMinutes() + ":" + timeEvent.getSeconds() + " ";
+                alarmsTime.remove(alarmTime);
+                alarm_text = "";
+                for (String alarm : alarmsTime) {
+                    alarm_text += alarm;
+                }
             }
         }
     }
@@ -64,6 +78,11 @@ public class ClientWindow implements IListener {
 
     public void onAddAlarm() {
         this.clientController.requestAddAlarm((int) spinner_alarmHours.getValue(), (int) spinner_alarmMinutes.getValue(),
+                (int) spinner_alarmSeconds.getValue());
+    }
+
+    public void onRemoveAlarm() {
+        this.clientController.requestRemoveAlarm((int) spinner_alarmHours.getValue(), (int) spinner_alarmMinutes.getValue(),
                 (int) spinner_alarmSeconds.getValue());
     }
 

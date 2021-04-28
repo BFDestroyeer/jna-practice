@@ -57,6 +57,22 @@ public class ServerModel implements IPublisher, IListener {
 
     }
 
+    public void removeAlarmClock(TimeEvent event) {
+        for (IAlarmClock alarmClock : this.alarmClocks) {
+            try {
+                if (alarmClock.getAlarmHours() == event.getHours() && alarmClock.getAlarmMinutes() == event.getMinutes() &&
+                alarmClock.getAlarmSeconds() == event.getSeconds()) {
+                    TimeEvent removeEvent = event;
+                    removeEvent.type = EventType.ALARM_CLOCK_REMOVED;
+                    eventManager.broadcast(removeEvent);
+                    databaseProvider.deleteAlarm(alarmClock);
+                    alarmClocks.remove(alarmClock);
+                }
+            } catch (Exception e) { };
+
+        }
+    }
+
     public void fetchAlarms() {
         Session session = DatabaseSessionFactory.get().openSession();
         List<AdvancedAlarmClock> rawAlarms = session.createQuery("from AdvancedAlarmClock", AdvancedAlarmClock.class).getResultList();

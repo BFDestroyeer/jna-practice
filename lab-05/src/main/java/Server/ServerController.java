@@ -66,6 +66,9 @@ public class ServerController extends Thread implements IListener {
                 if (event.type == EventType.REQUEST_ADD_ALARM_CLOCK) {
                     this.serverModel.addAlarmClock(timeEvent);
                 }
+                if (event.type == EventType.REQUEST_REMOVE_ALARM_CLOCK) {
+                    this.serverModel.removeAlarmClock(timeEvent);
+                }
             }
         } catch (IOException e) { };
     }
